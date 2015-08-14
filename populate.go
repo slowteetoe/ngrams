@@ -35,7 +35,7 @@ func parseCSVRecord(record []string) ngram {
     }
 
     phrase = record[0][0:i]
-    nextWord = record[0][i:]
+    nextWord = record[0][i+1:]
 
     prob, err := strconv.ParseFloat(record[2], 64)
     if err != nil {
@@ -47,6 +47,7 @@ func parseCSVRecord(record []string) ngram {
 
 
 // Don't forget to run
+// MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r
 // create index on :Ngram(phrase)
 func main() {
 
@@ -78,7 +79,7 @@ func main() {
 
         reader := csv.NewReader(file)
         lineCount := 0
-        batchSize := 1000
+        batchSize := 5000
         for {
             record, err := reader.Read()
             if err == io.EOF {

@@ -57,7 +57,7 @@ func main() {
     }
     defer db.Close()
 
-    files := []string{"bigrams.csv","trigrams.csv","fourgrams.csv"}
+    files := []string{"output.csv"}
 
     for _, f := range files {
 

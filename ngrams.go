@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-    "strings"
+	"strings"
 	"time"
 )
 
@@ -56,55 +56,55 @@ func suggestionsHandler(w http.ResponseWriter, r *http.Request) (int, error) {
 	return 200, nil
 }
 
-func cleanse(phrase string) string{
-    return "^" + phrase
+func cleanse(phrase string) string {
+	return "^" + phrase
 }
 
 func FindSuggestions(phrase string) []string {
-    q := cleanse(phrase)
+	q := cleanse(phrase)
 
-    // have to keep track of dups (e.g. 4-gram model could suggest "to" as only suggestion, and 3-gram could suggest "to" also)
-    keys := map[string]string{}
+	// have to keep track of dups (e.g. 4-gram model could suggest "to" as only suggestion, and 3-gram could suggest "to" also)
+	keys := map[string]string{}
 
-    var results []string
+	var results []string
 
-    for n := 4; n > 0; n-- {
-        theseResults := findSuggestions( q , n )
-        for _,t := range theseResults {
-            if keys[t] == "" {
-                results = append(results, t)
-                keys[t] = t
-            }
-        }
-        if len(results) >= 5 {
-            return results[:5]
-        }
-    }
-    if len(results) >= 5 {
-        return results[:5]
-    }
-    return results
+	for n := 4; n > 0; n-- {
+		theseResults := findSuggestions(q, n)
+		for _, t := range theseResults {
+			if keys[t] == "" {
+				results = append(results, t)
+				keys[t] = t
+			}
+		}
+		if len(results) >= 5 {
+			return results[:5]
+		}
+	}
+	if len(results) >= 5 {
+		return results[:5]
+	}
+	return results
 }
 
 func findSuggestions(phrase string, ngramSize int) []string {
-    log.Printf("Attempting to find suggestions from %v using a %v-gram\n", phrase, ngramSize)
-    if ngramSize == 1 {
-        log.Println("Returning default unigrams")
-        return []string{"the", "to", "a", "i", "you"}
-    }
+	log.Printf("Attempting to find suggestions from %v using a %v-gram\n", phrase, ngramSize)
+	if ngramSize == 1 {
+		log.Println("Returning default unigrams")
+		return []string{"the", "to", "a", "i", "you"}
+	}
 
-    words := strings.Split(phrase, " ")
+	words := strings.Split(phrase, " ")
 
-    q := phrase
+	q := phrase
 
-    if len(words) > ngramSize {
-        // only use the last n-1 words to predict since we only have 4-grams
-        q = strings.Join(words[len(words)-(ngramSize-1):]," ")
-    }
+	if len(words) > ngramSize {
+		// only use the last n-1 words to predict since we only have 4-grams
+		q = strings.Join(words[len(words)-(ngramSize-1):], " ")
+	}
 
-    log.Printf("Querying for: %v", q)
+	log.Printf("Querying for: %v", q)
 
-    rows, err := stmt.Query(q)
+	rows, err := stmt.Query(q)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -154,6 +154,6 @@ func main() {
 		WriteTimeout: 20 * time.Second,
 	}
 	http.Handle("/", appHandler(suggestionsHandler))
-    http.HandleFunc("/favicon.ico", http.NotFound)
+	http.HandleFunc("/favicon.ico", http.NotFound)
 	log.Fatal(s.ListenAndServe())
 }

@@ -14,7 +14,7 @@ import (
 type ngram struct {
 	phrase   string
 	nextWord string
-	freq 	 int
+	freq     int
 	prob     float64
 }
 
@@ -104,11 +104,13 @@ func main() {
 
 		outfile, err := os.OpenFile("output.csv", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 
-	    if err != nil {panic(err)}
-	    defer outfile.Close()
+		if err != nil {
+			panic(err)
+		}
+		defer outfile.Close()
 
-	    writer := csv.NewWriter(outfile)
-	    defer writer.Flush()
+		writer := csv.NewWriter(outfile)
+		defer writer.Flush()
 
 		thisHolderList := make([]ngram, 10)
 		holder := ngramHolder{min: -9999, n: 0, topN: thisHolderList}
@@ -130,9 +132,9 @@ func main() {
 						}
 						// loop over the top ngrams for this phrase and write them to the output file
 						var record []string
-						record = append(record, data.phrase + " " + data.nextWord)
-	        			record = append(record, strconv.Itoa(data.freq))
-	        			record = append(record, strconv.FormatFloat(data.prob, 'f', 6, 64))
+						record = append(record, data.phrase+" "+data.nextWord)
+						record = append(record, strconv.Itoa(data.freq))
+						record = append(record, strconv.FormatFloat(data.prob, 'f', 6, 64))
 						writer.Write(record)
 					}
 				}

@@ -87,7 +87,7 @@ func (h *ngramHolder) Add(n ngram) {
 
 func main() {
 
-	files := []string{"bigrams.csv", "trigrams.csv"} //, "fourgrams.csv"}
+	files := []string{"bigrams.csv", "trigrams.csv", "fourgrams.csv"}
 
 	for _, f := range files {
 
@@ -102,7 +102,7 @@ func main() {
 		reader := csv.NewReader(file)
 		lineCount := 0
 
-		outfile, err := os.Create("output.csv")
+		outfile, err := os.OpenFile("output.csv", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 
 	    if err != nil {panic(err)}
 	    defer outfile.Close()

@@ -3,10 +3,10 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	_ "gopkg.in/cq.v1"
 	"log"
 	"net/http"
 	"os"
+	_ "slowteetoe.com/ngrams/Godeps/_workspace/src/gopkg.in/cq.v1"
 	"strings"
 	"time"
 )

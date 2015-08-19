@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/csv"
-	_ "gopkg.in/cq.v1"
 	"io"
 	"log"
 	"os"
+	_ "slowteetoe.com/ngrams/Godeps/_workspace/src/gopkg.in/cq.v1"
 	"sort"
 	"strconv"
 	"strings"
